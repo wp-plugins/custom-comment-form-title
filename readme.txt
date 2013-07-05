@@ -1,0 +1,58 @@
+=== Custom Comment Form Title ===
+Contributors: dwrippe
+Tags: comments, comment form, comment form title
+Requires at least: 3.5
+Tested up to: 3.5.2
+Stable tag: 1.0
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+Engage your visitors and initiate discussion with more meaningful comment form titles, created on a post-by-post basis!
+
+== Description ==
+
+The problem with the default comment form in Wordpress is that the title "Leave A Reply" doesn't really engage readers or encourage them to start a discussion or join the conversation. With the Custom Comment Form Title plugin, you can quickly change the default title to something more engaging, then set a custom comment form title on a post-by-post basis to <em>really</em> engage your readers. Ask a compelling question, make a bold statement, or leave an empty threat. Say whatever you want!
+
+Some frameworks and themes replace the <em>comment_form_defaults</em> function with a new, unique function. This plugin has been tested with, and is known to work with, the following frameworks:
+
+<ul>
+<li>Genesis</li>
+<li>Thematic</li>
+</ul>
+
+If your framework isn't listed above, that doesn't mean the plugin won't work for you. Give it a try and find out. If it doesn't, head over to the forum and leave some information about your framework or theme. With your help, I can work on updating the plugin to work with a wider variety of frameworks and themes.
+
+== Installation ==
+
+1. Download 'custom-comment-form-title.zip'
+2. Extract the ZIP file and upload the 'custom-comment-form-title" folder to the '/wp-content/plugins/' directory
+3. Activate the plugin through the 'Plugins' menu in Wordpress
+4. Set the default comment form title in the 'Custom Comment Form Title' admin screen in the 'Settings' menu
+5. Set post-specific comment form titles in the 'Create/Edit Post' page 
+
+== Frequently Asked Questions ==
+
+= My custom titles aren't displaying. =
+
+Some frameworks overwrite the <em>comment_form_defaults</em> function with a new, unique function. Check the plugin settings page for a list of frameworks this plugin has been developed to work with.
+
+= What if my framework isn't listed? =
+
+Try the plugin and see if it works. Your framework may not replace the default <em>comment_form_defaults</em> function. If the plugin doesn't work, leave a comment in the forum and, with your help, I can work on updating the plugin to work with a wider variety of frameworks and themes.
+
+== Screenshots ==
+
+1. The plugin settings page with a new default comment form title.
+2. The new default comment form title in action.
+3. The custom comment form title box on the Edit Post screen.
+4. The new custom comment form title in action.
+
+== Changelog ==
+
+= 1.0 =
+* Plugin release
+
+== Upgrade Notice ==
+
+= 1.0 =
+Plugin release.
