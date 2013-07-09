@@ -3,7 +3,7 @@ Contributors: dwrippe
 Tags: comments, comment form, comment form title
 Requires at least: 3.5
 Tested up to: 3.5.2
-Stable tag: 1.01
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,29 @@ Some frameworks overwrite the <em>comment_form_defaults</em> function with a new
 
 Try the plugin and see if it works. Your framework may not replace the default <em>comment_form_defaults</em> function. If the plugin doesn't work, leave a comment in the forum and, with your help, I can work on updating the plugin to work with a wider variety of frameworks and themes.
 
+= I'm not using the <em>comment_form()</em> function, can I modify my comments.php file so this plugin will work with my theme? =
+
+Yes! Somewhere in your comments.php file you should see a line of code that looks similar to this:
+
+`<?php comment_form_title( __('Leave a Reply'), __('Leave a Reply for %s') ); ?>`
+
+If you replace that line of code with the follow snippet you should be able to use Custom Comment Form Titles with your website:
+
+`<?php
+	$post_id = get_the_ID();
+
+	if ( !empty( $post_id ) ) {
+		$arg = get_post_meta( $post_id, 'ccft_post_comment_title', true );
+	}
+
+	if ( empty( $arg ) ) {
+		$ccft_admin_options = get_option( 'custom_comment_form_title' );
+		$arg = esc_attr( $ccft_admin_options['default_title'] );
+	}
+
+	echo '<h3>' . $arg . '</h3>';
+?>`
+
 == Screenshots ==
 
 1. The plugin settings page with a new default comment form title.
@@ -55,6 +78,10 @@ Try the plugin and see if it works. Your framework may not replace the default <
 
 == Changelog ==
 
+= 1.1 =
+* Added custom Comment Form Title functionality to Pages (previously only available for Posts).
+* Added additional FAQs
+
 = 1.01 =
 * Updated text in the readme.txt file to include a note about other comment system plugins.
 * No functionality changes.
@@ -63,6 +90,9 @@ Try the plugin and see if it works. Your framework may not replace the default <
 * Plugin release
 
 == Upgrade Notice ==
+
+= 1.1 =
+* Custom Comment Form Title functionality is now available for Pages!
 
 = 1.01 =
 * Updated some text in the readme.txt file. No functionality changes.

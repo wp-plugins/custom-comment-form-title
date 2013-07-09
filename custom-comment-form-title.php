@@ -3,7 +3,7 @@
 Plugin Name: Custom Comment Form Title
 Plugin URI: http://custom-comment-form-title.media-cairn.com/
 Description: Create custom Comment Form Titles for individual posts.
-Version: 1.01
+Version: 1.1
 Author: MediaCairn Design Studio
 Author URI: http://www.media-cairn.com/
 License: GPLv2 or later
@@ -105,73 +105,69 @@ function ccft_default_title( $arg ) {
 	return $arg;
 }
 
-/* Setup the meta box setup function on the post editor screen. */
-add_action( 'load-post.php', 'ccft_post_meta_boxes_setup' );
-add_action( 'load-post-new.php', 'ccft_post_meta_boxes_setup' );
+/* Define the custom box */
 
-/* Meta box setup function. */
-function ccft_post_meta_boxes_setup() {
+add_action( 'add_meta_boxes', 'ccft_add_post_meta_boxes' );
 
-	/* Add meta boxes on the 'add_meta_boxes' hook. */
-	add_action( 'add_meta_boxes', 'ccft_add_post_meta_boxes' );
+// backwards compatible (before WP 3.0)
+// add_action( 'admin_init', 'ccft_add_post_meta_boxes', 1 );
 
-	/* Save post meta on the 'save_post' hook. */
-	add_action( 'save_post', 'ccft_save_post_comment_title_meta', 10, 2 );
-}
+/* Do something with the data entered */
+add_action( 'save_post', 'ccft_save_post_comment_title_meta' );
 
-/* Create one or more meta boxes to be displayed on the post editor screen. */
+/* Adds a box to the main column on the Post and Page edit screens */
 function ccft_add_post_meta_boxes() {
-
-	add_meta_box(
-		'ccft-post-comment-title',						// Unique ID
-		esc_html__( 'Custom Comment Form Title' ),		// Title
-		'ccft_post_comment_title_meta_box',				// Callback function
-		'post',											// Admin page (or post type)
-		'normal',										// Context
-		'default'										// Priority
-	);
+    $screens = array( 'post', 'page' );
+    foreach ($screens as $screen) {
+        add_meta_box(
+            'ccft-post-comment-title',
+            __( 'Custom Comment Form Title', 'ccft_textdomain' ),
+            'ccft_inner_custom_box',
+            $screen
+        );
+    }
 }
 
-/* Display the post meta box. */
-function ccft_post_comment_title_meta_box( $object, $box ) { ?>
-	<?php wp_nonce_field( basename( __FILE__ ), 'ccft_post_comment_title_nonce' ); ?>
-	<p><input class="widefat" type="text" name="ccft-post-comment-title" id="ccft-post-comment-title" value="<?php echo esc_attr( get_post_meta( $object->ID, 'ccft_post_comment_title', true ) ); ?>" size="30" /></p>
-<?php }
+/* Prints the box content */
+function ccft_inner_custom_box( $post ) {
 
-/* Save the meta box's post metadata. */
-function ccft_save_post_comment_title_meta( $post_id, $post ) {
+  // Use nonce for verification
+  wp_nonce_field( plugin_basename( __FILE__ ), 'ccft_post_comment_title_nonce' );
 
-	/* Verify the nonce before proceeding. */
-	if ( !isset( $_POST['ccft_post_comment_title_nonce'] ) || !wp_verify_nonce( $_POST['ccft_post_comment_title_nonce'], basename( __FILE__ ) ) )
-		return $post_id;
+  // The actual fields for data entry
+  // Use get_post_meta to retrieve an existing value from the database and use the value for the form
+  $value = get_post_meta( $post->ID, 'ccft_post_comment_title', true );
+  echo '<input class="widefat" type="text" id="ccft-post-comment-title" name="ccft-post-comment-title" value="'.esc_attr($value).'" size="30" />';
+}
 
-	/* Get the post type object. */
-	$post_type = get_post_type_object( $post->post_type );
+/* When the post is saved, saves our custom data */
+function ccft_save_post_comment_title_meta( $post_id ) {
 
-	/* Check if the current user has permission to edit the post. */
-	if ( !current_user_can( $post_type->cap->edit_post, $post_id ) )
-		return $post_id;
+  // First we need to check if the current user is authorised to do this action. 
+  if ( 'page' == $_POST['post_type'] ) {
+    if ( ! current_user_can( 'edit_page', $post_id ) )
+        return;
+  } else {
+    if ( ! current_user_can( 'edit_post', $post_id ) )
+        return;
+  }
 
-	/* Get the posted data and sanitize it for use as a text string. */
-	$new_meta_value = ( isset( $_POST['ccft-post-comment-title'] ) ? sanitize_text_field( $_POST['ccft-post-comment-title'] ) : '' );
+  // Secondly we need to check if the user intended to change this value.
+  if ( ! isset( $_POST['ccft_post_comment_title_nonce'] ) || ! wp_verify_nonce( $_POST['ccft_post_comment_title_nonce'], plugin_basename( __FILE__ ) ) )
+      return;
 
-	/* Get the meta key. */
-	$meta_key = 'ccft_post_comment_title';
+  // Thirdly we can save the value to the database
 
-	/* Get the meta value of the custom field key. */
-	$meta_value = get_post_meta( $post_id, $meta_key, true );
+  //if saving in a custom table, get post_ID
+  $post_ID = $_POST['post_ID'];
+  //sanitize user input
+  $mydata = sanitize_text_field( $_POST['ccft-post-comment-title'] );
 
-	/* If a new meta value was added and there was no previous value, add it. */
-	if ( $new_meta_value && '' == $meta_value )
-		add_post_meta( $post_id, $meta_key, $new_meta_value, true );
-
-	/* If the new meta value does not match the old value, update it. */
-	elseif ( $new_meta_value && $new_meta_value != $meta_value )
-		update_post_meta( $post_id, $meta_key, $new_meta_value );
-
-	/* If there is no new meta value but an old value exists, delete it. */
-	elseif ( '' == $new_meta_value && $meta_value )
-		delete_post_meta( $post_id, $meta_key, $meta_value );
+  // Do something with $mydata 
+  // either using 
+  add_post_meta($post_ID, 'ccft_post_comment_title', $mydata, true) or
+    update_post_meta($post_ID, 'ccft_post_comment_title', $mydata);
+  // or a custom table (see Further Reading section below)
 }
 
 /* Filter the post class hook with our custom post class function. */
