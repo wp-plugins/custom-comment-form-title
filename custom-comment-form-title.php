@@ -3,13 +3,13 @@
 Plugin Name: Custom Comment Form Title
 Plugin URI: http://custom-comment-form-title.media-cairn.com/
 Description: Create custom Comment Form Titles for individual posts.
-Version: 1.1
+Version: 2.0
 Author: MediaCairn Design Studio
 Author URI: http://www.media-cairn.com/
 License: GPLv2 or later
 */
 
-/*  Copyright 2013 MediaCairn Design Studio
+/*  Copyright 2014 MediaCairn Design Studio
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License, version 2, as 
@@ -25,7 +25,23 @@ License: GPLv2 or later
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-/* Setup the Options screen */
+/*
+--------------------
+INTERNATIONALIZATION
+--------------------
+*/
+
+add_action('init', 'ccft_ap_action_init');
+function ccft_ap_action_init() {
+	load_plugin_textdomain('ccft-lang', false, basename( dirname( __FILE__ ) ) . '/languages' );
+}
+
+/* 
+------------------------------
+SETUP THE ADMIN OPTIONS SCREEN
+------------------------------
+*/
+
 add_action('admin_init', 'ccftoptions_init' );
 add_action('admin_menu', 'ccftoptions_add_page');
 
@@ -43,28 +59,32 @@ function ccftoptions_add_page() {
 function ccftoptions_do_page() {
 	?>
 	<div class="wrap" style="max-width:550px;">
-		<h2>Custom Comment Form Title</h2>
+		<h2><?php _e('Custom Comment Form Title', 'ccft-lang' ) ?></h2>
 		<form method="post" action="options.php">
 			<?php settings_fields('ccftoptions_options'); ?>
 			<?php $options = get_option('custom_comment_form_title'); ?>
 
 			<div class="form-element">
-				<h3><?php _e('Default Comment Form Title') ?></h3>
-				<p><?php _e('Choose a default title to be used for all comment forms. This can be overridden for individual posts on the "Edit Post" screen.') ?>
+				<h3><?php _e('Default Comment Form Title', 'ccft-lang' ) ?></h3>
+				<p><?php _e('Choose a default title to be used for all comment forms. This can be overridden for individual posts on the "Edit Post" screen.', 'ccft-lang' ) ?>
 				<p><input type="text" size="50" name="custom_comment_form_title[default_title]" value="<?php echo $options['default_title']; ?>" />
-                <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
+                <input type="submit" class="button-primary" value="<?php _e('Save Changes', 'ccft-lang' ) ?>" />
 		</form>
         
         <div style="clear:both;border-top:1px solid #CCC;margin:20px 0;"></div>
-            <h4><?php _e('A note about Framework & Theme Compatibility:') ?></h4>
-            <p><?php _e('Some frameworks and themes replace the <em>comment_form_defaults();</em> function with a new, custom function. This plugin is known to work with the following frameworks:') ?>
+            <h4><?php _e('A note about Framework and Theme Compatibility:', 'ccft-lang' ) ?></h4>
+            <p><?php _e('Some frameworks and themes replace the ', 'ccft-lang') ?><em>comment_form_defaults();</em><?php _e(' function with a new, custom function. This plugin is known to work with the following frameworks:', 'ccft-lang' ) ?>
             <ul>
                 <li>&bull; Genesis</li>
                 <li>&bull; Thematic</li>
             </ul>
-            <p><?php _e('If this plugin isn\'t working with your theme, head over to the forum and leave some information about your framework or theme. With your help, I can work on updating the plugin to work with a wider variety of frameworks and themes.') ?>
-            <h4><?php _e('A note about other comment system plugins:') ?></h4>
-            <p><?php _e('Some comment systems (such as Disqus) replace the Wordpress Comment Form all together. This plugin simply updates variables within the built-in comment form, and if this form is removed and replaced with a completely different system, this plugin will no longer work.') ?>
+            <p><?php _e('If this plugin does not work with your theme, head over to the forum and leave some information about your framework or theme. With your help, I can work on updating the plugin to work with a wider variety of frameworks and themes.', 'ccft-lang' ) ?>
+            <h4><?php _e('A note about other comment system plugins:', 'ccft-lang' ) ?></h4>
+            <p><?php _e('Some comment systems replace the Wordpress Comment Form all together. Special consideration must be taken to hook this plugin\'s custom titles back into the page before the new comment system. This plugin has been designed to work with the following comment systems:', 'ccft-lang' ) ?>
+            <ul>
+                <li>&bull; Disqus</li>
+            </ul>
+            <p><?php _e('If the commment system you use is not listed above, head over to the forum and leave some information about what you are using. With your help, I can work on updating the plugin to work with a wider variety of comment systems.', 'ccft-lang' ) ?>
         </div>
 	</div>
 	<?php	
@@ -79,33 +99,11 @@ function ccftoptions_validate($input) {
 	return $input;
 }
 
-/* Filter the comment form defaults hook with our custom comment form default title function. */
-add_filter( 'comment_form_defaults', 'ccft_default_title' );
-
-/* Framework filters */
-$theme_data = wp_get_theme();
-$template = $theme_data->Template;
-
-if( $template = "genesis" ) {
-	remove_filter( 'genesis_comment_form_args', 'custom_comment_form_args' );
-	add_filter( 'genesis_comment_form_args', 'ccft_default_title' );
-}
-if( $template = "thematic" ) {
-	remove_filter( 'thematic_comment_form_args', 'custom_comment_form_args' );
-	add_filter( 'thematic_comment_form_args', 'ccft_default_title' );
-}
-
-function ccft_default_title( $arg ) {
-	$ccft_admin_options = get_option( 'custom_comment_form_title' );
-	$default_title = esc_attr( $ccft_admin_options['default_title'] );
-
-	if ( !empty( $default_title ) ) {
-		$arg['title_reply'] = $default_title;
-	}
-	return $arg;
-}
-
-/* Define the custom box */
+/* 
+----------------------------
+SETUP THE POST/PAGE META BOX
+----------------------------
+*/
 
 add_action( 'add_meta_boxes', 'ccft_add_post_meta_boxes' );
 
@@ -121,7 +119,7 @@ function ccft_add_post_meta_boxes() {
     foreach ($screens as $screen) {
         add_meta_box(
             'ccft-post-comment-title',
-            __( 'Custom Comment Form Title', 'ccft_textdomain' ),
+            __( 'Custom Comment Form Title', 'ccft-lang' ),
             'ccft_inner_custom_box',
             $screen
         );
@@ -144,16 +142,16 @@ function ccft_inner_custom_box( $post ) {
 function ccft_save_post_comment_title_meta( $post_id ) {
 
   // First we need to check if the current user is authorised to do this action. 
-  if ( 'page' == $_POST['post_type'] ) {
-    if ( ! current_user_can( 'edit_page', $post_id ) )
+  if( 'page' == $_POST['post_type'] ) {
+    if( ! current_user_can( 'edit_page', $post_id ) )
         return;
-  } else {
-    if ( ! current_user_can( 'edit_post', $post_id ) )
+  } else{
+    if( ! current_user_can( 'edit_post', $post_id ) )
         return;
   }
 
   // Secondly we need to check if the user intended to change this value.
-  if ( ! isset( $_POST['ccft_post_comment_title_nonce'] ) || ! wp_verify_nonce( $_POST['ccft_post_comment_title_nonce'], plugin_basename( __FILE__ ) ) )
+  if( ! isset( $_POST['ccft_post_comment_title_nonce'] ) || ! wp_verify_nonce( $_POST['ccft_post_comment_title_nonce'], plugin_basename( __FILE__ ) ) )
       return;
 
   // Thirdly we can save the value to the database
@@ -170,16 +168,26 @@ function ccft_save_post_comment_title_meta( $post_id ) {
   // or a custom table (see Further Reading section below)
 }
 
+/*
+----------------------------------------------------
+SET THE NEW CUSTOM COMMENT FORM TITLE, IF ONE EXISTS
+----------------------------------------------------
+*/
+
 /* Filter the post class hook with our custom post class function. */
 add_filter( 'comment_form_defaults', 'ccft_post_comment_title' );
 
 /* Framework filters */
 $theme_data = wp_get_theme();
 $template = $theme_data->Template;
+
+// Genesis
 if( $template = "genesis" ) {
 	remove_filter( 'genesis_comment_form_args', 'custom_comment_form_args' );
 	add_filter( 'genesis_comment_form_args', 'ccft_post_comment_title' );
 }
+
+// Thematic
 if( $template = "thematic" ) {
 	remove_filter( 'thematic_comment_form_args', 'custom_comment_form_args' );
 	add_filter( 'thematic_comment_form_args', 'ccft_post_comment_title' );
@@ -187,20 +195,66 @@ if( $template = "thematic" ) {
 
 function ccft_post_comment_title( $arg ) {
 
-	/* Get the current post ID. */
+	$ccft_admin_options = get_option( 'custom_comment_form_title' );
+	$default_title = esc_attr( $ccft_admin_options['default_title'] );
 	$post_id = get_the_ID();
+	
+	if( !empty( $post_id ) ) {
 
-	/* If we have a post ID, proceed. */
-	if ( !empty( $post_id ) ) {
-
-		/* Get the custom post class. */
 		$post_comment_title = get_post_meta( $post_id, 'ccft_post_comment_title', true );
-
-		/* If a post class was input, sanitize it and add it to the post class array. */
-		if ( !empty( $post_comment_title ) )
+		if( !empty( $post_comment_title ) )
 			$arg['title_reply'] = sanitize_text_field( $post_comment_title );
+		elseif ( !empty( $default_title ) )
+			$arg['title_reply'] = $default_title;
 	}
 	return $arg;
+}
+
+/*
+----------------------------------------------------------------------
+OUTPUT THE CUSTOM COMMENT FORM TITLE FOR NON-WORDPRESS COMMENT SYSTEMS
+This includes Disqus (and hopefully more to come).
+----------------------------------------------------------------------
+*/
+
+add_action( 'plugins_loaded', 'ccft_other_systems_check' );
+function ccft_other_systems_check() {
+	
+	// Disqus
+	if( function_exists( 'dsq_comments_template' ) ) {
+		
+		$disqus_active = get_option('disqus_active');
+		if( $disqus_active == '1' ) {
+			
+			add_action( 'comments_template', 'ccft_comment_form_before', 0 );
+			function ccft_comment_form_before() {
+								
+				$ccft_admin_options = get_option( 'custom_comment_form_title' );
+				$default_title = esc_attr( $ccft_admin_options['default_title'] );
+				$post_id = get_the_ID();
+				
+				if( !empty( $post_id ) ) {
+					$post_comment_title = get_post_meta( $post_id, 'ccft_post_comment_title', true );
+					if ( !empty( $post_comment_title ) )
+						$post_comment_title_clean = sanitize_text_field( $post_comment_title );
+				}
+				
+				if( !empty( $post_comment_title_clean ) )
+					$post_comment_title_singular = $post_comment_title_clean;
+				
+				elseif ( !empty( $default_title ) )
+					$post_comment_title_singular = $default_title;
+					
+				if( !empty( $post_comment_title_singular ) )
+					echo '<div id="respond" class="comment-respond"><h3 id="reply-title" class="comment-reply-title">' . $post_comment_title_singular . '</h3></div>';
+									
+			}
+							
+		}
+	
+	}
+	// end Disqus
+
 }
 
 ?>
