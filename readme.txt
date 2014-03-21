@@ -91,6 +91,7 @@ else {
 = 2.0 =
 * Added compatability with the Disqus Comment System.
 * Revised code to be more efficient.
+* Created .po file for localization.
 
 = 1.1 =
 * Added custom Comment Form Title functionality to Pages (previously only available for Posts).
