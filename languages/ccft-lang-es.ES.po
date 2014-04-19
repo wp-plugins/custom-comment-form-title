@@ -1,0 +1,93 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Custom Comment Form Title\n"
+"POT-Creation-Date: 2014-03-19 22:24-0800\n"
+"PO-Revision-Date: 2014-03-24 09:33+0100\n"
+"Last-Translator: jelena kovacevic <jecajeca260@gmail.com>\n"
+"Language-Team: MediaCairn Design Studio <info@media-cairn.com>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-Basepath: ../\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: custom-comment-form-title.php:62 custom-comment-form-title.php:122
+msgid "Custom Comment Form Title"
+msgstr "Título de la Forma del Comentario Personalizado"
+
+#: custom-comment-form-title.php:68
+msgid "Default Comment Form Title"
+msgstr "Título de la Forma del Comentario por Defecto"
+
+#: custom-comment-form-title.php:69
+msgid ""
+"Choose a default title to be used for all comment forms. This can be "
+"overridden for individual posts on the \"Edit Post\" screen."
+msgstr ""
+"Elija un título por defecto que se utilizará en todos los comentarios de las "
+"formas. Esto puede sobrescribirse para los post individuales en la pantalla "
+"\"Editar Post\"."
+
+#: custom-comment-form-title.php:71
+msgid "Save Changes"
+msgstr "Guardar los Cambios"
+
+#: custom-comment-form-title.php:75
+msgid "A note about Framework and Theme Compatibility:"
+msgstr "Una nota sobre el Framework y la compatibilidad del Tema:"
+
+#: custom-comment-form-title.php:76
+msgid "Some frameworks and themes replace the "
+msgstr "Algunos frameworks y temas reemplazan la"
+
+#: custom-comment-form-title.php:76
+msgid ""
+" function with a new, custom function. This plugin is known to work with the "
+"following frameworks:"
+msgstr ""
+"función con una nueva función personalizada. Este plugin es conocido por "
+"trabajar con los siguientes frameworks:"
+
+#: custom-comment-form-title.php:81
+msgid ""
+"If this plugin does not work with your theme, head over to the forum and "
+"leave some information about your framework or theme. With your help, I can "
+"work on updating the plugin to work with a wider variety of frameworks and "
+"themes."
+msgstr ""
+"Si este plugin no funciona con su tema, diríjase hacia el foro y deje un "
+"poco de información acerca de su framework o tema. Con su ayuda, puedo "
+"trabajar en la actualización del plugin para trabajar con una amplia "
+"variedad de frameworks y temas."
+
+#: custom-comment-form-title.php:82
+msgid "A note about other comment system plugins:"
+msgstr "Una nota sobre otros plugins del sistema de comentario:"
+
+#: custom-comment-form-title.php:83
+msgid ""
+"Some comment systems replace the Wordpress Comment Form all together. "
+"Special consideration must be taken to hook this plugin's custom titles back "
+"into the page before the new comment system. This plugin has been designed "
+"to work with the following comment systems:"
+msgstr ""
+"Algunos sistemas de comentario reemplazan la Forma de Comentarios de "
+"Wordpress todos juntos. Se debe tomar especial consideración para enganchar "
+"estos títulos personalizados de este plugin de nuevo en la página antes del "
+"nuevo sistema de comentario. Este plugin está diseñado para trabajar con los "
+"siguientes sistemas de comentario:"
+
+#: custom-comment-form-title.php:87
+msgid ""
+"If the commment system you use is not listed above, head over to the forum "
+"and leave some information about what you are using. With your help, I can "
+"work on updating the plugin to work with a wider variety of comment systems."
+msgstr ""
+"Si el sistema de comentario que usted usa no está en la lista de arriba, "
+"diríjase hacia el foro y deje un poco de información acerca de lo que está "
+"utilizando. Con su ayuda, puedo trabajar en la actualización del plugin para "
+"trabajar con una amplia variedad de sistemas de comentario."

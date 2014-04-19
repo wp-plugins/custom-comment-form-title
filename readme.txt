@@ -2,8 +2,8 @@
 Contributors: dwrippe
 Tags: comment, comments, comment form, comment form title, post comments, page comments, disqus
 Requires at least: 3.5
-Tested up to: 3.8.1
-Stable tag: 2.0
+Tested up to: 3.9
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,6 +88,9 @@ else {
 
 == Changelog ==
 
+= 2.0.1 =
+* Added Spanish language file.
+
 = 2.0 =
 * Added compatability with the Disqus Comment System.
 * Revised code to be more efficient.
@@ -105,6 +108,9 @@ else {
 * Plugin release
 
 == Upgrade Notice ==
+
+= 2.0.1 =
+* Added Spanish language file.
 
 = 2.0 =
 * Custom Comment Form Title now works with the Disqus Comment System!
