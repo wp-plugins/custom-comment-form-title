@@ -3,7 +3,7 @@
 Plugin Name: Custom Comment Form Title
 Plugin URI: http://custom-comment-form-title.media-cairn.com/
 Description: Create custom Comment Form Titles for individual posts.
-Version: 2.0
+Version: 2.0.1
 Author: MediaCairn Design Studio
 Author URI: http://www.media-cairn.com/
 License: GPLv2 or later
